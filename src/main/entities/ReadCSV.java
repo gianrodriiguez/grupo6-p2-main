@@ -33,11 +33,41 @@ public class ReadCSV<Tweets> {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
              CSVParser csvParser = new CSVParser(br, CSVFormat.DEFAULT)) {
             for (CSVRecord csvRecord : csvParser) {
-                User user = new User(); // csvRecord es un array con tweets, le asigno a cada uno valores
-                Tweet tweet = new Tweet(); // Saco los usuarios y todo del csvRecord, csvRecord.setUserId() ...
-                Hashtag hashTag = new Hashtag();
+//                User user = new User(); // csvRecord es un array con tweets, le asigno a cada uno valores
+//                Tweet tweet = new Tweet(); // Saco los usuarios y todo del csvRecord, csvRecord.setUserId() ...
+//                Hashtag hashTag = new Hashtag();
                 try {
-                    //codigo pa leer el csv
+//                    CODIGO PARA LEER EL CSV
+                    String userName = csvRecord.get(0);
+//                    String userLocation = csvRecord.get(1);
+//                    String userDescription = csvRecord.get(2);
+                    String userCreated = csvRecord.get(3);
+                    int userFollowers = Integer.parseInt(csvRecord.get(4));
+                    int userFriends = Integer.parseInt(csvRecord.get(5));
+                    int userFavourites = Integer.parseInt(csvRecord.get(6));
+                    boolean userVerified = Boolean.parseBoolean(csvRecord.get(7));
+                    String date = csvRecord.get(8);
+                    String text = csvRecord.get(9);
+                    String[] hashtags = csvRecord.get(10).split(",");
+                    String source = csvRecord.get(11);
+                    boolean isRetweet = Boolean.parseBoolean(csvRecord.get(12));
+
+                    User user = new User();     // Falta varias cosas del user
+                    user.setName(userName);
+//                    user.setLocation(userLocation);
+//                    user.setDescription(userDescription);
+
+                    Tweet tweet = new Tweet();
+                    tweet.setContent(text);
+                    tweet.setSource(source);
+                    tweet.setRetweet(isRetweet);
+                    tweet.setDate(date);
+
+                    for (String hashtagText : hashtags) {
+                        Hashtag hashtag = new Hashtag();
+                        hashtag.setText(hashtagText);
+                        tweet.getHashtags().add(hashtag);
+                    }
                 } catch (Exception ignored) {
                 }
             }
@@ -45,6 +75,5 @@ public class ReadCSV<Tweets> {
             throw new FileNotValidException("FILE_ERROR_FORMAT", e);
         }
     }
-
 }
 
