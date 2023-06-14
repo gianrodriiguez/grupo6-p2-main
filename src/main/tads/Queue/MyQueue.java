@@ -1,4 +1,4 @@
-package src.main.tads.Queue;
+package main.tads.Queue;
 
 public interface MyQueue<T> {
     void enqueue (T value);

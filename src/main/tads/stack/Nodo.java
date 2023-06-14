@@ -1,4 +1,4 @@
-package src.main.tads.stack;
+package main.tads.stack;
 
 public class Nodo<T> {
 

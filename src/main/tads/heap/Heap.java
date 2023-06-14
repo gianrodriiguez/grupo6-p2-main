@@ -1,4 +1,4 @@
-package src.main.tads.heap;
+package main.tads.heap;
 public class Heap<T extends Comparable<T>> implements MyHeap<T>{
     private arrayList<T> heap;
     private boolean esMaxHeap;

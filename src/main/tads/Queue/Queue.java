@@ -1,4 +1,4 @@
-package src.main.tads.Queue;
+package main.tads.Queue;
 
 public class Queue<T> implements MyQueue<T>{
 

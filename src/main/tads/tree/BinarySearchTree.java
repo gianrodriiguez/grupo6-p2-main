@@ -1,6 +1,6 @@
-package src.main.tads.tree;
+package main.tads.tree;
 
-import src.main.tads.linkedlist.ListaEnlazada;
+import main.tads.linkedlist.ListaEnlazada;
 public class BinarySearchTree<k extends Comparable<k>,T> implements MyBinarySearchTree <k,T> {
     NodoBST<k, T> root;
 

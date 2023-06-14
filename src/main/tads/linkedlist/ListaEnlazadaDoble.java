@@ -1,4 +1,4 @@
-package src.main.tads.linkedlist;
+package main.tads.linkedlist;
 
 public class ListaEnlazadaDoble<T extends  Comparable<T>> implements Lista <T> {
 

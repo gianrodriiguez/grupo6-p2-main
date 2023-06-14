@@ -1,6 +1,6 @@
-package src.main.entities;
+package main.entities;
 
-import src.main.tads.linkedlist.ListaEnlazada;
+import main.tads.linkedlist.ListaEnlazada;
 
 public class Tweet {
     private long id;

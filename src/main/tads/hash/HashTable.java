@@ -1,4 +1,4 @@
-package src.main.tads.hash;
+package main.tads.hash;
 
 public interface HashTable<K, V> {
 

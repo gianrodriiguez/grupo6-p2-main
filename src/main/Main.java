@@ -1,7 +1,7 @@
-package src.main;
+package main;
 
-import src.main.entities.ReadCSV;
-import src.main.exceptions.FileNotValidException;
+import main.entities.ReadCSV;
+import main.exceptions.FileNotValidException;
 
 import java.io.IOException;
 import java.util.Scanner;

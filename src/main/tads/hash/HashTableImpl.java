@@ -1,4 +1,4 @@
-package src.main.tads.hash;
+package main.tads.hash;
 
 public class HashTableImpl<K, V> implements HashTable<K, V> {
     private int size;

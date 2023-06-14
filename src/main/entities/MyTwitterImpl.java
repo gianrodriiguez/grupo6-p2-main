@@ -1,4 +1,4 @@
-package src.main.entities;
+package main.entities;
 
 public interface MyTwitterImpl {
 

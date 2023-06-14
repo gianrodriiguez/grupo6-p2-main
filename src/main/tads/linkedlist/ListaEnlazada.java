@@ -1,4 +1,4 @@
-package src.main.tads.linkedlist;
+package main.tads.linkedlist;
 
 public class ListaEnlazada <T> implements Lista<T> {
     Nodo<T> primero;

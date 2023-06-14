@@ -1,4 +1,4 @@
-package src.main.tads.tree;
+package main.tads.tree;
 
 public class NodoBST<k extends Comparable<k>,T>{
     NodoBST<k,T> left;

@@ -1,4 +1,4 @@
-package src.main.entities;
+package main.entities;
 
 public class Hashtag {
     private long id = 0;

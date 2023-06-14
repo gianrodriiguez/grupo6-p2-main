@@ -1,4 +1,4 @@
-package src.main.tads.linkedlist;
+package main.tads.linkedlist;
 
 public interface Lista <T> {
     void add(T value);

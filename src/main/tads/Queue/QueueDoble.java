@@ -1,4 +1,7 @@
-package src.main.tads.Queue;
+package main.tads.Queue;
+
+import main.tads.Queue.MyQueue;
+import main.tads.Queue.NodoDoble;
 
 public class QueueDoble<T> implements MyQueue<T> {
     NodoDoble<T> head;

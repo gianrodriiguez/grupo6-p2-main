@@ -1,4 +1,4 @@
-package src.main.tads.heap;
+package main.tads.heap;
 
 public class arrayList<T> {
     private static final int Tamaño = 10;

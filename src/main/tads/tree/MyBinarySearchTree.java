@@ -1,6 +1,6 @@
-package src.main.tads.tree;
+package main.tads.tree;
 
-import src.main.tads.linkedlist.ListaEnlazada;
+import main.tads.linkedlist.ListaEnlazada;
 
 public interface MyBinarySearchTree<k,T> {
     void insert(k key, T value);
