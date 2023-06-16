@@ -4,15 +4,15 @@ import main.tads.linkedlist.ListaEnlazada;
 
 public class Tweet {
     private long id;
-    private String content;
-    private String source;
+    private String tweetText;
+    private String tweetSource;
     private boolean isRetweet;
     private ListaEnlazada<Hashtag> hashtags;
     private String date;
-    public Tweet(long id, String content, String source, boolean isRetweet, String date) {
+    public Tweet(long id, String tweetText, String tweetSource, boolean isRetweet, String date) {
         this.id = id;
-        this.content = content;
-        this.source = source;
+        this.tweetText = tweetText;
+        this.tweetSource = tweetSource;
         this.isRetweet = isRetweet;
         this.hashtags = new ListaEnlazada<>();
         this.date = date;
@@ -30,20 +30,20 @@ public class Tweet {
         this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public String gettweetText() {
+        return tweetText;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void settweetText(String tweetText) {
+        this.tweetText = tweetText;
     }
 
-    public String getSource() {
-        return source;
+    public String gettweetSource() {
+        return tweetSource;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void settweetSource(String tweetSource) {
+        this.tweetSource = tweetSource;
     }
 
     public boolean isRetweet() {

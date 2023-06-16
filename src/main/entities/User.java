@@ -8,13 +8,21 @@ public class User {
     private int favourites;
     private boolean isVerified;
     ListaEnlazada<Tweet> tweets;
-
+    private static long counter = 0;
+    private static synchronized long generateId() {
+        return ++counter; // Increment the counter and assign the new value as the ID
+    }
     public User(long id, String name, int favourites, boolean isVerified) {
-        this.id = id;
+        this.id = generateId();
         this.name = name;
         this.favourites = favourites;
         this.isVerified = isVerified;
         this.tweets = new ListaEnlazada<>();
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(id);
     }
 
     public User() {}
@@ -23,9 +31,6 @@ public class User {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -55,7 +60,7 @@ public class User {
         return tweets;
     }
 
-    public void setTweets(ListaEnlazada<Tweet> tweets) {
-        this.tweets = tweets;
+    public void addTweet(Tweet tweet) {
+        tweets.add(tweet);
     }
 }

@@ -1,7 +1,10 @@
 package main;
 
 import main.entities.ReadCSV;
+import main.entities.TwitterImpl;
+import main.entities.User;
 import main.exceptions.FileNotValidException;
+import main.tads.hash.HashTableImpl;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -9,6 +12,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException, FileNotValidException {
 
+
+
+        TwitterImpl twitter = new TwitterImpl(5);
         menu();
         ReadCSV csv = new ReadCSV();
         csv.GetUsersInfo();
