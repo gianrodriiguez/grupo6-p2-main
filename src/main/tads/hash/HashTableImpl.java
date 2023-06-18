@@ -1,5 +1,7 @@
 package main.tads.hash;
 
+import main.tads.linkedlist.ListaEnlazada;
+
 public class HashTableImpl<K, V> implements HashTable<K, V> {
     private int size;
     private HashNode<K, V>[] table;
@@ -45,8 +47,6 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
     private void resizeTable() {
         int nuevaCapacidad = capacidad * 2;
         HashNode<K, V>[] nuevaTabla = new HashNode[nuevaCapacidad];
-
-        // Rehash all existing elements
         for (int i = 0; i < capacidad; i++) {
             HashNode<K, V> currentNode = table[i];
             while (currentNode != null) {
@@ -68,6 +68,18 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
 
         table = nuevaTabla;
         capacidad = nuevaCapacidad;
+    }
+
+    public ListaEnlazada<V> values() {
+        ListaEnlazada<V> valuesList = new ListaEnlazada<>();
+        for (HashNode<K, V> node : table) {
+            HashNode<K, V> currentNode = node;
+            while (currentNode != null) {
+                valuesList.add(currentNode.getValue());
+                currentNode = currentNode.getNext();
+            }
+        }
+        return valuesList;
     }
 
     @Override
@@ -104,6 +116,7 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
             currentNode = currentNode.getNext();
         }
     }
+
 
     private int hash(K key) {
         return Math.abs(key.hashCode()) % capacidad;

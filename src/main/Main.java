@@ -1,26 +1,51 @@
 package main;
 
-import main.entities.ReadCSV;
-import main.entities.TwitterImpl;
-import main.entities.User;
 import main.exceptions.FileNotValidException;
-import main.tads.hash.HashTableImpl;
-
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+    private static ReadCSV datos = new ReadCSV();
     public static void main(String[] args) throws IOException, FileNotValidException {
-
-        ReadCSV csv = new ReadCSV();
-        csv.GetUsersInfo();
+        datos.getUsersInfo();
+//        csv.getDriversFromFile();
         menu();
+    }
+    private static void pilotosMasMencionados() {
+//        Scanner scanner1 = new Scanner(System.in);
+//        Scanner scanner2 = new Scanner(System.in);
+//        System.out.println("Ingrese mes: ");
+//        String mes = scanner1.nextLine();
+//        System.out.println("Ingrese año: ");
+//        String anio = scanner1.nextLine();
+//
+//        ListaEnlazada<String> pilotosMencionados = new ListaEnlazada<>();
+    }
+    private static void cantidadHashtagsDistintos() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese fecha (YYYY-MM-DD): ");
+        String fecha = scanner.nextLine();
+        int cantHashtags = datos.miTwitter.cantHashtagsDistintos(fecha);
+        System.out.println("Cantidad de hashtags distintos para el día " + fecha + ": " + cantHashtags);
+    }
 
+    private static void HashtagMasUsado() {
+
+    }
+
+    private static void TopCuentasConMasFavoritos() {
+    }
+
+
+    private static void topUsuariosConMasTweets() {
+    }
+
+
+    private static void TweetsConPalabraFraseEspecifica() {
     }
 
     private static void menu() {
         Scanner scanner = new Scanner(System.in);
-
         boolean exit = false;
         while (!exit) {
             System.out.println("=== Casa de Apuestas ===");
@@ -32,10 +57,8 @@ public class Main {
             System.out.println("6. Cantidad de tweets con una palabra o frase específica");
             System.out.println("7. Salir");
             System.out.print("Ingrese una opción: ");
-
             int option = scanner.nextInt();
             scanner.nextLine();
-
             switch (option) {
                 case 1:
                     pilotosMasMencionados();
@@ -61,24 +84,5 @@ public class Main {
             }
             System.out.println();
         }
-    }
-
-    private static void HashtagMasUsado() {
-    }
-
-    private static void TopCuentasConMasFavoritos() {
-    }
-
-    private static void cantidadHashtagsDistintos() {
-    }
-
-    private static void topUsuariosConMasTweets() {
-    }
-
-    private static void pilotosMasMencionados() {
-        
-    }
-
-    private static void TweetsConPalabraFraseEspecifica() {
     }
 }

@@ -1,10 +1,9 @@
-package main.entities;
+package main;
 
-import main.entities.ReadCSV;
+import main.entities.Hashtag;
+import main.entities.Tweet;
+import main.entities.TwitterImpl;
 import main.entities.User;
-import java.io.FileNotFoundException;
-
-import main.tads.hash.HashTableImpl;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -13,28 +12,26 @@ import main.tads.linkedlist.ListaEnlazada;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ReadCSV<Tweets> {
-    public ReadCSV() throws IOException {}
-    TwitterImpl miTwitter = new TwitterImpl();
-    public static void getDriversFromFile() {
+    public TwitterImpl miTwitter = new TwitterImpl();
+    ListaEnlazada<String> pilotos = new ListaEnlazada<>();
+    public void getDriversFromFile() {
         String driversFile = "src/main/resources/drivers.txt";
-        ListaEnlazada<String> conductores = new ListaEnlazada<>();
         try (BufferedReader br = new BufferedReader(new FileReader(driversFile))) {
             String line;
             while ((line = br.readLine()) != null) {
-                conductores.add(line.toLowerCase());
+                pilotos.add(line.toLowerCase());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        conductores.print();
+        pilotos.print();
     }
 
-    public void GetUsersInfo() throws FileNotValidException {
+    public void getUsersInfo() throws FileNotValidException {
         String csvFile = "src/main/resources/f1_dataset_test.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
              CSVParser csvParser = new CSVParser(br, CSVFormat.DEFAULT)) {
@@ -53,7 +50,7 @@ public class ReadCSV<Tweets> {
                     double userFavourites = Double.parseDouble(csvRecord.get(7));
                     boolean userIsVerified = Boolean.parseBoolean(csvRecord.get(8));
 //                    String tweetDate = csvRecord.get(9); // usar dateTime
-//                    DATE
+//                    DateTime
                     String tweetDate = csvRecord.get(9);
                     String pattern = "yyyy-MM-dd HH:mm:ss";
                     SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
@@ -61,11 +58,11 @@ public class ReadCSV<Tweets> {
 
                     String tweetText = csvRecord.get(10);
 //                    String[] hashtags = csvRecord.get(11).split(",");
+//                    Lectura Hashtag
                     String hashtagsString = csvRecord.get(11);
                     hashtagsString = hashtagsString.replace("[", "").replace("]", "");
                     hashtagsString = hashtagsString.replace("'", "");
                     String[] hashtags = hashtagsString.split(",");
-
                     String tweetSource = csvRecord.get(12);
                     boolean isRetweet = Boolean.parseBoolean(csvRecord.get(13));
 
@@ -79,7 +76,7 @@ public class ReadCSV<Tweets> {
                     User user = new User(userName, userFavourites, userIsVerified);
                     user.addTweet(tweet);
                     miTwitter.usuarios.put(user.getId(), user);
-                    miTwitter.tweets.put(tweetId,tweet);
+                    miTwitter.tweets.add(tweet);
 
                 } catch (Exception ignored) {}
             }

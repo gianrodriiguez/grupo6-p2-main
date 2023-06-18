@@ -2,14 +2,11 @@ package main.tads.heap;
 
 public class arrayList<T> {
     private static final int Tamaño = 10;
-
     private T[] array;
     private int size;
-
     public arrayList() {
         this(Tamaño);
     }
-
     public arrayList(int tamañoInicial) {
         array = (T[]) new Object[tamañoInicial];
         size = 0;

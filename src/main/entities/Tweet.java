@@ -1,7 +1,6 @@
 package main.entities;
 
 import main.tads.linkedlist.ListaEnlazada;
-
 import java.util.Date;
 
 public class Tweet {
