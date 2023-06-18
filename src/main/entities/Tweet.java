@@ -2,14 +2,16 @@ package main.entities;
 
 import main.tads.linkedlist.ListaEnlazada;
 
+import java.util.Date;
+
 public class Tweet {
     private long id;
     private String tweetText;
     private String tweetSource;
     private boolean isRetweet;
     private ListaEnlazada<Hashtag> hashtags;
-    private String date;
-    public Tweet(long id, String tweetText, String tweetSource, boolean isRetweet, String date) {
+    private Date date;
+    public Tweet(long id, String tweetText, String tweetSource, boolean isRetweet, Date date) {
         this.id = id;
         this.tweetText = tweetText;
         this.tweetSource = tweetSource;
@@ -30,19 +32,19 @@ public class Tweet {
         this.id = id;
     }
 
-    public String gettweetText() {
+    public String getTweetText() {
         return tweetText;
     }
 
-    public void settweetText(String tweetText) {
+    public void setTweetText(String tweetText) {
         this.tweetText = tweetText;
     }
 
-    public String gettweetSource() {
+    public String getTweetSource() {
         return tweetSource;
     }
 
-    public void settweetSource(String tweetSource) {
+    public void setTweetSource(String tweetSource) {
         this.tweetSource = tweetSource;
     }
 
@@ -58,15 +60,15 @@ public class Tweet {
         return hashtags;
     }
 
-    public void setHashtags(ListaEnlazada<Hashtag> hashtags) {
-        this.hashtags = hashtags;
+    public void addHashtag(Hashtag hashtag) {
+        hashtags.add(hashtag);
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

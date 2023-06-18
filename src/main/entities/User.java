@@ -5,14 +5,12 @@ import main.tads.linkedlist.ListaEnlazada;
 public class User {
     private long id;
     private String name;
-    private int favourites;
+    private double favourites;
     private boolean isVerified;
     ListaEnlazada<Tweet> tweets;
+    private int numberOfTweets = 0;
     private static long counter = 0;
-    private static synchronized long generateId() {
-        return ++counter; // Increment the counter and assign the new value as the ID
-    }
-    public User(long id, String name, int favourites, boolean isVerified) {
+    public User(String name, double favourites, boolean isVerified) {
         this.id = generateId();
         this.name = name;
         this.favourites = favourites;
@@ -20,17 +18,17 @@ public class User {
         this.tweets = new ListaEnlazada<>();
     }
 
+    private static synchronized long generateId() {
+        return ++counter;
+    }
     @Override
     public int hashCode() {
         return Long.hashCode(id);
     }
 
-    public User() {}
-
     public long getId() {
         return id;
     }
-
 
     public String getName() {
         return name;
@@ -40,11 +38,11 @@ public class User {
         this.name = name;
     }
 
-    public int getFavourites() {
+    public double getFavourites() {
         return favourites;
     }
 
-    public void setFavourites(int favourites) {
+    public void setFavourites(Double favourites) {
         this.favourites = favourites;
     }
 
@@ -62,5 +60,6 @@ public class User {
 
     public void addTweet(Tweet tweet) {
         tweets.add(tweet);
+        numberOfTweets =+ 1;
     }
 }

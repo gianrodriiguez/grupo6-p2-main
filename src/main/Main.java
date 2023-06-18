@@ -12,12 +12,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws IOException, FileNotValidException {
 
-
-
-        TwitterImpl twitter = new TwitterImpl(5);
-        menu();
         ReadCSV csv = new ReadCSV();
         csv.GetUsersInfo();
+        menu();
 
     }
 

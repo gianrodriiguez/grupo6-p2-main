@@ -1,54 +1,49 @@
 package main.tads.linkedlist;
 
-public class ListaEnlazada <T> implements Lista<T> {
-    Nodo<T> primero;
-    int size;
+public class ListaEnlazada<T> implements Lista<T> {
+    private Nodo<T> primero;
+    private int size;
+
     public ListaEnlazada() {
         this.size = 0;
         this.primero = null;
     }
 
+    public int size() {
+        return size;
+    }
 
-//  ADD ELEMENT IN POSITION i
-
+    // ADD ELEMENT IN posicion i
     @Override
     public void add(T value) {
         Nodo<T> nuevoNodo = new Nodo<T>(value);
 
         if (primero == null) {
             primero = nuevoNodo;
-        }
-        else {
+        } else {
             Nodo<T> actual = primero;
             while (actual.siguiente != null) {
                 actual = actual.siguiente;
             }
             actual.siguiente = nuevoNodo;
         }
-        size ++;
+        size++;
     }
 
-//  REMOVE ELEMENT IN POSITION i
+    // REMOVE ELEMENT IN posicion i
     @Override
-    public void remove(int position) {
-
+    public void remove(int posicion) {
         if (primero == null) {
-        }
-        else if (position == 0) {
+        } else if (posicion == 0) {
             primero = primero.siguiente;
             size--;
-        }
-
-        else if (position > 0) {
-
+        } else if (posicion > 0) {
             int i = 0;
             Nodo<T> actual = primero;
 
             if (actual.siguiente == null) {
-                System.out.println("siguiente es null");
-
             } else if (actual.siguiente != null) {
-                while (i < position - 1) {
+                while (i < posicion - 1) {
                     actual = actual.siguiente;
                     i++;
                 }
@@ -58,24 +53,18 @@ public class ListaEnlazada <T> implements Lista<T> {
         }
     }
 
-
-//  GET ELEMENT IN POSITION i
+    // GET ELEMENT IN posicion i
     @Override
-    public T get(int position) {
-
-        if (Math.abs(position) >= size) {
-            System.out.println("Ingrese posicion menor al numero de elementos de la lista");
+    public T get(int posicion) {
+        if (Math.abs(posicion) >= size) {
             return null;
-        }
-        else {
-            if (position == 0) {
+        } else {
+            if (posicion == 0) {
                 return primero.value;
-            }
-            else if (position > 0) {
+            } else if (posicion > 0) {
                 int i = 0;
                 Nodo<T> actual = primero;
-
-                while (i < position) {
+                while (i < posicion) {
                     actual = actual.siguiente;
                     i++;
                 }
@@ -100,9 +89,7 @@ public class ListaEnlazada <T> implements Lista<T> {
 
     @Override
     public boolean lookFor(T value) {
-
         Nodo<T> actual = primero;
-
         if (actual.value == value) {
             return true;
         }

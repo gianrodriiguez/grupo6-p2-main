@@ -13,9 +13,13 @@ import main.tads.linkedlist.ListaEnlazada;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ReadCSV<Tweets> {
     public ReadCSV() throws IOException {}
+    TwitterImpl miTwitter = new TwitterImpl();
     public static void getDriversFromFile() {
         String driversFile = "src/main/resources/drivers.txt";
         ListaEnlazada<String> conductores = new ListaEnlazada<>();
@@ -35,64 +39,54 @@ public class ReadCSV<Tweets> {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
              CSVParser csvParser = new CSVParser(br, CSVFormat.DEFAULT)) {
             for (CSVRecord csvRecord : csvParser) {
-//                User user = new User(); // csvRecord es un array con tweets, le asigno a cada uno valores
-//                Tweet tweet = new Tweet(); // Saco los usuarios y todo del csvRecord, csvRecord.setUserId() ...
-//                Hashtag hashTag = new Hashtag();
+            // csvRecord es un array con tweets, le asigno a cada uno valores
                 try {
-//                    CODIGO PARA LEER EL CSV
-
-
-
+//                  LECTURA CSV
+//                  DATOS
+                    long tweetId = Long.parseLong(csvRecord.get(0));
                     String userName = csvRecord.get(1);
-                    String userLocation = csvRecord.get(2);
-                    String userDescription = csvRecord.get(3);
+//                    String userLocation = csvRecord.get(2);
+//                    String userDescription = csvRecord.get(3);
                     String userDate = csvRecord.get(4);
-                    int userFollowers = Integer.parseInt(csvRecord.get(5));
-                    int userFriends = Integer.parseInt(csvRecord.get(6));
-                    int userFavourites = Integer.parseInt(csvRecord.get(7));
+                    double userFollowers = Double.parseDouble(csvRecord.get(5));
+                    double userFriends = Double.parseDouble(csvRecord.get(6));
+                    double userFavourites = Double.parseDouble(csvRecord.get(7));
                     boolean userIsVerified = Boolean.parseBoolean(csvRecord.get(8));
-
+//                    String tweetDate = csvRecord.get(9); // usar dateTime
+//                    DATE
                     String tweetDate = csvRecord.get(9);
+                    String pattern = "yyyy-MM-dd HH:mm:ss";
+                    SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+                    Date parsedTweetDate = dateFormat.parse(tweetDate);
+
                     String tweetText = csvRecord.get(10);
-                    String[] hashtags = csvRecord.get(11).split(",");
+//                    String[] hashtags = csvRecord.get(11).split(",");
+                    String hashtagsString = csvRecord.get(11);
+                    hashtagsString = hashtagsString.replace("[", "").replace("]", "");
+                    hashtagsString = hashtagsString.replace("'", "");
+                    String[] hashtags = hashtagsString.split(",");
+
                     String tweetSource = csvRecord.get(12);
                     boolean isRetweet = Boolean.parseBoolean(csvRecord.get(13));
 
-//                    if ()
-                    User user = new User();     // Falta varias cosas del user
-                    user.setName(userName);
-                    user.setFavourites(userFavourites);
-                    user.setVerified(userIsVerified);
-
-                    Tweet tweet = new Tweet(user.getId(),tweetText, tweetSource, isRetweet, tweetDate);
-                    user.addTweet(tweet);
-
-
-
-
-// Store user and hash code in the hash table
-//                    usuarios.put(user, userHash);
-
-//                    user.setLocation(userLocation);
-//                    user.setDescription(userDescr iption);
-
-//                    Tweet tweet = new Tweet();
-//                    tweet.settweetText(tweetText);
-//                    tweet.settweetSource(tweetSource);
-//                    tweet.setRetweet(isRetweet);
-//                    tweet.setDate(tweetDate);
-
+//                  INSERCIONES
+                    Tweet tweet = new Tweet(tweetId,tweetText, tweetSource, isRetweet, parsedTweetDate);
                     for (String hashtagText : hashtags) {
-                        Hashtag hashtag = new Hashtag();
-                        hashtag.setText(hashtagText);
-                        tweet.getHashtags().add(hashtag);
+                        Hashtag hashtag = new Hashtag(hashtagText);
+                        tweet.addHashtag(hashtag);
                     }
-                } catch (Exception ignored) {
-                }
+
+                    User user = new User(userName, userFavourites, userIsVerified);
+                    user.addTweet(tweet);
+                    miTwitter.usuarios.put(user.getId(), user);
+                    miTwitter.tweets.put(tweetId,tweet);
+
+                } catch (Exception ignored) {}
             }
         } catch (IOException e) {
             throw new FileNotValidException("FILE_ERROR_FORMAT", e);
         }
+
     }
 }
 

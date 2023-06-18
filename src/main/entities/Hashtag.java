@@ -3,13 +3,14 @@ package main.entities;
 public class Hashtag {
     private long id = 0;
     private String text;
-
-    public Hashtag(long id, String text) {
-        this.id = id;
-        this.text = text;
+    private static long counter = 0;
+    private static synchronized long generateId() {
+        return ++counter;
     }
-    public Hashtag() {
 
+    public Hashtag(String text) {
+        this.id = generateId();
+        this.text = text;
     }
     public long getId() {
         return id;

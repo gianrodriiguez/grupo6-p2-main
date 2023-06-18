@@ -4,11 +4,12 @@ import main.tads.hash.HashTableImpl;
 import main.tads.linkedlist.ListaEnlazada;
 
 public class TwitterImpl implements MyTwitterImpl{
-//    ListaEnlazada<User> usuarios;
     public HashTableImpl<Long, User> usuarios;
+    public HashTableImpl<Long, Tweet> tweets;
 
-    public TwitterImpl(int size) {
-        this.usuarios = new HashTableImpl<Long, User>(size);
+    public TwitterImpl() {
+        this.usuarios = new HashTableImpl<Long,User>();
+        this.tweets = new HashTableImpl<Long, Tweet>();
     }
 
     public void addUser(long userhash, User user) {

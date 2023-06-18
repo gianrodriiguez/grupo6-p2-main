@@ -3,15 +3,17 @@ package main.tads.hash;
 public class HashTableImpl<K, V> implements HashTable<K, V> {
     private int size;
     private HashNode<K, V>[] table;
-    private int capacity;
+    private int capacidad;
+    private float incremento;
 
-    public HashTableImpl(int capacity) {
-        this.table = new HashNode[capacity];
-        for (int i = 0; i < capacity; i++) {
+    public HashTableImpl() {
+        this.capacidad = 10;
+        this.table = new HashNode[capacidad];
+        for (int i = 0; i < capacidad; i++) {
             table[i] = null;
         }
-        this.capacity = capacity;
         this.size = 0;
+        this.incremento = 0.75f;
     }
 
     public int size() {
@@ -20,25 +22,58 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = hash(key);
+        int indice = hash(key);
         HashNode<K, V> newNode = new HashNode<>(key, value, null);
 
-        if (table[index] == null) {
-            table[index] = newNode;
+        if (table[indice] == null) {
+            table[indice] = newNode;
         } else {
-            HashNode<K, V> currentNode = table[index];
+            HashNode<K, V> currentNode = table[indice];
             while (currentNode.getNext() != null) {
                 currentNode = currentNode.getNext();
             }
             currentNode.setNext(newNode);
         }
         size++;
+
+        float currentIncremento = (float) size / capacidad;
+        if (currentIncremento > incremento) {
+            resizeTable();
+        }
+    }
+
+    private void resizeTable() {
+        int nuevaCapacidad = capacidad * 2;
+        HashNode<K, V>[] nuevaTabla = new HashNode[nuevaCapacidad];
+
+        // Rehash all existing elements
+        for (int i = 0; i < capacidad; i++) {
+            HashNode<K, V> currentNode = table[i];
+            while (currentNode != null) {
+                int nuevoIndice = hash(currentNode.getKey(), nuevaCapacidad);
+                HashNode<K, V> newNode = new HashNode<>(currentNode.getKey(), currentNode.getValue(), null);
+
+                if (nuevaTabla[nuevoIndice] == null) {
+                    nuevaTabla[nuevoIndice] = newNode;
+                } else {
+                    HashNode<K, V> currentNewNode = nuevaTabla[nuevoIndice];
+                    while (currentNewNode.getNext() != null) {
+                        currentNewNode = currentNewNode.getNext();
+                    }
+                    currentNewNode.setNext(newNode);
+                }
+                currentNode = currentNode.getNext();
+            }
+        }
+
+        table = nuevaTabla;
+        capacidad = nuevaCapacidad;
     }
 
     @Override
     public boolean contains(K key) {
-        int index = hash(key);
-        HashNode<K, V> currentNode = table[index];
+        int indice = hash(key);
+        HashNode<K, V> currentNode = table[indice];
 
         while (currentNode != null) {
             if (currentNode.getKey().equals(key)) {
@@ -51,14 +86,14 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
 
     @Override
     public void remove(K key) {
-        int index = hash(key);
-        HashNode<K, V> currentNode = table[index];
+        int indice = hash(key);
+        HashNode<K, V> currentNode = table[indice];
         HashNode<K, V> prevNode = null;
 
         while (currentNode != null) {
             if (currentNode.getKey().equals(key)) {
                 if (prevNode == null) {
-                    table[index] = currentNode.getNext();
+                    table[indice] = currentNode.getNext();
                 } else {
                     prevNode.setNext(currentNode.getNext());
                 }
@@ -71,7 +106,11 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
     }
 
     private int hash(K key) {
-        return Math.abs(key.hashCode()) % capacity;
+        return Math.abs(key.hashCode()) % capacidad;
+    }
+
+    private int hash(K key, int capacidad) {
+        return Math.abs(key.hashCode()) % capacidad;
     }
 }
 
