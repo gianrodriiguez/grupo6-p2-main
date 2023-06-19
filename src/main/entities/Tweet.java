@@ -18,11 +18,6 @@ public class Tweet {
         this.hashtags = new ListaEnlazada<>();
         this.date = date;
     }
-
-    public Tweet() {
-
-    }
-
     public long getId() {
         return id;
     }

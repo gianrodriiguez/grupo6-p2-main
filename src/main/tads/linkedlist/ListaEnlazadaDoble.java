@@ -12,6 +12,11 @@ public class ListaEnlazadaDoble<T extends  Comparable<T>> implements Lista <T> {
     }
 
     @Override
+    public boolean contains(T value) {
+        return false;
+    }
+
+    @Override
     public void add(T value) {
         NodoDoble<T> nuevoNodo = new NodoDoble<>(value);
 

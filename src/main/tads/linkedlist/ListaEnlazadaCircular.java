@@ -169,6 +169,11 @@ public class ListaEnlazadaCircular<T extends Comparable<T>> implements Lista<T> 
     }
 
     @Override
+    public boolean contains(T value) {
+        return false;
+    }
+
+    @Override
     public void intercambiar(T value, int position) {
         NodoDoble<T> actual = primero;
         NodoDoble<T> previo = actual;

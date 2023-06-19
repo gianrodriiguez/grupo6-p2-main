@@ -2,6 +2,7 @@ package main.tads.linkedlist;
 
 public interface Lista <T> {
     void add(T value);
+    boolean contains(T value);
     void addFirst(T value);
     void addAscendente(T value);
     void addLast(T value);

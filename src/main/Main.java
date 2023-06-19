@@ -1,50 +1,27 @@
 package main;
 
+import main.entities.TwitterImpl;
 import main.exceptions.FileNotValidException;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private static ReadCSV datos = new ReadCSV();
     public static void main(String[] args) throws IOException, FileNotValidException {
-        datos.getUsersInfo();
-//        csv.getDriversFromFile();
-        menu();
+        TwitterImpl miTwitter = new TwitterImpl();
+        ReadCSV datosReader = new ReadCSV(miTwitter);
+        datosReader.getUsersInfo();
+        menu(miTwitter);
     }
-    private static void pilotosMasMencionados() {
-//        Scanner scanner1 = new Scanner(System.in);
-//        Scanner scanner2 = new Scanner(System.in);
-//        System.out.println("Ingrese mes: ");
-//        String mes = scanner1.nextLine();
-//        System.out.println("Ingrese año: ");
-//        String anio = scanner1.nextLine();
-//
-//        ListaEnlazada<String> pilotosMencionados = new ListaEnlazada<>();
-    }
-    private static void cantidadHashtagsDistintos() {
+
+    private static void cantidadHashtagsDistintos(TwitterImpl miTwitter) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese fecha (YYYY-MM-DD): ");
         String fecha = scanner.nextLine();
-        int cantHashtags = datos.miTwitter.cantHashtagsDistintos(fecha);
+        int cantHashtags = miTwitter.cantHashtagsDistintos(fecha);
         System.out.println("Cantidad de hashtags distintos para el día " + fecha + ": " + cantHashtags);
     }
 
-    private static void HashtagMasUsado() {
-
-    }
-
-    private static void TopCuentasConMasFavoritos() {
-    }
-
-
-    private static void topUsuariosConMasTweets() {
-    }
-
-
-    private static void TweetsConPalabraFraseEspecifica() {
-    }
-
-    private static void menu() {
+    private static void menu(TwitterImpl miTwitter) {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
         while (!exit) {
@@ -67,7 +44,7 @@ public class Main {
                     topUsuariosConMasTweets();
                     break;
                 case 3:
-                    cantidadHashtagsDistintos();
+                    cantidadHashtagsDistintos(miTwitter);
                     break;
                 case 4:
                     HashtagMasUsado();
@@ -84,5 +61,21 @@ public class Main {
             }
             System.out.println();
         }
+    }
+    private static void pilotosMasMencionados() {
+    }
+
+    private static void HashtagMasUsado() {
+
+    }
+    private static void TopCuentasConMasFavoritos() {
+    }
+
+
+    private static void topUsuariosConMasTweets() {
+    }
+
+
+    private static void TweetsConPalabraFraseEspecifica() {
     }
 }

@@ -13,6 +13,18 @@ public class ListaEnlazada<T> implements Lista<T> {
         return size;
     }
 
+    @Override
+    public boolean contains(T value) {
+        Nodo<T> actual = primero;
+        while (actual != null) {
+            if (actual.value.equals(value)) {
+                return true;
+            }
+            actual = actual.siguiente;
+        }
+        return false;
+    }
+
     // ADD ELEMENT IN posicion i
     @Override
     public void add(T value) {
@@ -34,22 +46,21 @@ public class ListaEnlazada<T> implements Lista<T> {
     @Override
     public void remove(int posicion) {
         if (primero == null) {
+            return;
         } else if (posicion == 0) {
             primero = primero.siguiente;
             size--;
-        } else if (posicion > 0) {
-            int i = 0;
+        } else if (posicion > 0 && posicion < size) {
             Nodo<T> actual = primero;
+            int i = 0;
 
-            if (actual.siguiente == null) {
-            } else if (actual.siguiente != null) {
-                while (i < posicion - 1) {
-                    actual = actual.siguiente;
-                    i++;
-                }
-                actual.siguiente = actual.siguiente.siguiente;
-                size--;
+            while (i < posicion - 1) {
+                actual = actual.siguiente;
+                i++;
             }
+
+            actual.siguiente = actual.siguiente.siguiente;
+            size--;
         }
     }
 
@@ -90,25 +101,11 @@ public class ListaEnlazada<T> implements Lista<T> {
     @Override
     public boolean lookFor(T value) {
         Nodo<T> actual = primero;
-        if (actual.value == value) {
-            return true;
-        }
-        else {
-            int i = 0;
-            while (i <= size){
-                if (actual != null) {
-                    if (actual.value == value) {
-                        return true;
-                    }
-                    else {
-                        actual = actual.siguiente;
-                    }
-                }
-                else if (actual == null){
-                    return false;
-                }
-                i++;
+        while (actual != null) {
+            if (actual.value.equals(value)) {
+                return true;
             }
+            actual = actual.siguiente;
         }
         return false;
     }

@@ -1,36 +1,36 @@
 package main.entities;
 
-import main.ReadCSV;
 import main.tads.hash.HashTableImpl;
 import main.tads.linkedlist.ListaEnlazada;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Hashtable;
 
-public class TwitterImpl implements MyTwitterImpl{
+public class TwitterImpl implements MyTwitterImpl {
     public HashTableImpl<Long, User> usuarios;
     public ListaEnlazada<Tweet> tweets;
     public ListaEnlazada<String> pilotos;
-    private static ReadCSV datos= new ReadCSV();
 
     public TwitterImpl() {
         this.usuarios = new HashTableImpl<>();
         this.tweets = new ListaEnlazada<>();
         this.pilotos = new ListaEnlazada<>();
     }
+
     public void addUser(long userhash, User user) {
         usuarios.put(userhash, user);
     }
+
     public boolean contains(long id) {
         boolean yaExiste = usuarios.contains(id);
         return yaExiste;
     }
+
     public HashTableImpl<Long, User> getUsuarios() {
         return usuarios;
     }
+
     public void setUsuarios(HashTableImpl<Long, User> usuarios) {
         this.usuarios = usuarios;
     }
@@ -39,20 +39,19 @@ public class TwitterImpl implements MyTwitterImpl{
     public ListaEnlazada<String> pilotosMasMencionados(String mes, String anio) {
         return null;
     }
+
     @Override
     public int cantHashtagsDistintos(String fechaSinParse) {
         Date fechaSeleccionada = parsearFecha(fechaSinParse);
         int contador = 0;
-        Hashtable<String, Boolean> hashtagsDistintos = new Hashtable<>();
-        for (int i = 0; i < datos.miTwitter.tweets.size(); i++) {
-            Tweet tweet = datos.miTwitter.tweets.get(i);
+        ListaEnlazada<String> hashtagsDistintos = new ListaEnlazada<>();
+        for (int i = 0; i < tweets.size(); i++) {
+            Tweet tweet = tweets.get(i);
             if (mismaFecha(tweet.getDate(), fechaSeleccionada)) {
                 for (int j = 0; j < tweet.getHashtags().size(); j++) {
                     Hashtag hashtag = tweet.getHashtags().get(j);
                     String textoHashtag = hashtag.getText().toLowerCase();
-                    if (!textoHashtag.equals("#f1")) {
-                        hashtagsDistintos.put(textoHashtag, true);
-                    }
+                    hashtagsDistintos.add(textoHashtag);
                 }
             }
         }
@@ -60,7 +59,7 @@ public class TwitterImpl implements MyTwitterImpl{
         return contador;
     }
 
-    private static boolean mismaFecha(Date date1, Date date2) {
+    private boolean mismaFecha(Date date1, Date date2) {
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
         Calendar cal2 = Calendar.getInstance();
@@ -71,11 +70,10 @@ public class TwitterImpl implements MyTwitterImpl{
         int year2 = cal2.get(Calendar.YEAR);
         int month2 = cal2.get(Calendar.MONTH);
         int day2 = cal2.get(Calendar.DAY_OF_MONTH);
-
         return year1 == year2 && month1 == month2 && day1 == day2;
     }
 
-    private static Date parsearFecha(String fecha) {
+    private Date parsearFecha(String fecha) {
         Date fechaSeleccionada = null;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -89,23 +87,21 @@ public class TwitterImpl implements MyTwitterImpl{
 
     @Override
     public void HashtagMasUsado() {
-
+        // Implementation here
     }
 
     @Override
     public void TopCuentasConMasFavoritos() {
-
+        // Implementation here
     }
-
 
     @Override
     public void topUsuariosConMasTweets() {
-
+        // Implementation here
     }
-
 
     @Override
     public void TweetsConPalabraFraseEspecifica() {
-
+        // Implementation here
     }
 }
