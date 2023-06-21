@@ -16,7 +16,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ReadCSV<Tweets> {
+
+
+
+
+public class ReadCSV {
     TwitterImpl miTwitter;
     public ReadCSV(TwitterImpl miTwitter) {
         this.miTwitter = miTwitter;
@@ -43,7 +47,7 @@ public class ReadCSV<Tweets> {
 
             for (CSVRecord csvRecord : csvParser) {
                 try {
-                    //              LECTURA CSV
+                    // LECTURA CSV
                     // DATOS
                     long tweetId = Long.parseLong(csvRecord.get(0));
                     String userName = csvRecord.get(1);
@@ -52,14 +56,18 @@ public class ReadCSV<Tweets> {
                     double userFriends = Double.parseDouble(csvRecord.get(6));
                     double userFavourites = Double.parseDouble(csvRecord.get(7));
                     boolean userIsVerified = Boolean.parseBoolean(csvRecord.get(8));
+                    // DATE
                     String tweetDate = csvRecord.get(9);
                     String pattern = "yyyy-MM-dd HH:mm:ss";
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+                    SimpleDateFormat inputFormat = new SimpleDateFormat(pattern);
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date tweetDateParseada;
 
                     // Chequea tweetDate
                     try {
-                        tweetDateParseada = dateFormat.parse(tweetDate);
+                        Date parsedDate = inputFormat.parse(tweetDate);
+                        String formattedDate = outputFormat.format(parsedDate);
+                        tweetDateParseada = outputFormat.parse(formattedDate);
                     } catch (ParseException e) {
                         continue;
                     }
@@ -82,18 +90,22 @@ public class ReadCSV<Tweets> {
                     for (String hashtagText : hashtags) {
                         Hashtag hashtag = new Hashtag(hashtagText.toLowerCase());
                         tweet.addHashtag(hashtag);
+                        hashtag.getTweets().add(tweet);
                     }
 
-                    User user = new User(userName, userFavourites, userIsVerified);
-                    user.addTweet(tweet);
-                    miTwitter.usuarios.put(user.getId(), user);
-                    miTwitter.tweets.add(tweet);
-
-                    usuariosProcesados.add(userName.toLowerCase());
+                    if (tweet != null && tweet.getUser() == null) {
+                        User nuevoUser = new User(userName, userFavourites, userIsVerified);
+                        nuevoUser.addTweet(tweet);
+                        tweet.setUser(nuevoUser);
+                        miTwitter.usuarios.put(nuevoUser.getId(), nuevoUser);
+                        miTwitter.tweets.add(tweet);
+                        usuariosProcesados.add(userName.toLowerCase());
+                    }
 
                 } catch (Exception ignored) {
                 }
             }
+            getDriversFromFile();
         } catch (IOException e) {
             throw new FileNotValidException("FILE_ERROR_FORMAT", e);
         }

@@ -2,6 +2,7 @@ package main;
 
 import main.entities.TwitterImpl;
 import main.exceptions.FileNotValidException;
+
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class Main {
         datosReader.getUsersInfo();
         menu(miTwitter);
     }
+//        datosReader.getDriversFromFile();
 
     private static void cantidadHashtagsDistintos(TwitterImpl miTwitter) {
         Scanner scanner = new Scanner(System.in);
@@ -62,19 +64,18 @@ public class Main {
             System.out.println();
         }
     }
+
     private static void pilotosMasMencionados() {
     }
 
     private static void HashtagMasUsado() {
-
     }
+
     private static void TopCuentasConMasFavoritos() {
     }
 
-
     private static void topUsuariosConMasTweets() {
     }
-
 
     private static void TweetsConPalabraFraseEspecifica() {
     }

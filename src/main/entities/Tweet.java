@@ -4,6 +4,7 @@ import main.tads.linkedlist.ListaEnlazada;
 import java.util.Date;
 
 public class Tweet {
+    User user;
     private long id;
     private String tweetText;
     private String tweetSource;
@@ -17,7 +18,21 @@ public class Tweet {
         this.isRetweet = isRetweet;
         this.hashtags = new ListaEnlazada<>();
         this.date = date;
+        this.user = null;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setHashtags(ListaEnlazada<Hashtag> hashtags) {
+        this.hashtags = hashtags;
+    }
+
     public long getId() {
         return id;
     }
