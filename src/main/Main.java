@@ -1,5 +1,6 @@
 package main;
 
+import main.entities.Hashtag;
 import main.entities.TwitterImpl;
 import main.exceptions.FileNotValidException;
 
@@ -10,10 +11,10 @@ public class Main {
     public static void main(String[] args) throws IOException, FileNotValidException {
         TwitterImpl miTwitter = new TwitterImpl();
         ReadCSV datosReader = new ReadCSV(miTwitter);
+//        datosReader.getDriversFromFile();
         datosReader.getUsersInfo();
         menu(miTwitter);
     }
-//        datosReader.getDriversFromFile();
 
     private static void cantidadHashtagsDistintos(TwitterImpl miTwitter) {
         Scanner scanner = new Scanner(System.in);
@@ -21,6 +22,13 @@ public class Main {
         String fecha = scanner.nextLine();
         int cantHashtags = miTwitter.cantHashtagsDistintos(fecha);
         System.out.println("Cantidad de hashtags distintos para el día " + fecha + ": " + cantHashtags);
+    }
+    private static void HashtagMasUsado(TwitterImpl miTwitter) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese fecha (YYYY-MM-DD): ");
+        String fecha = scanner.nextLine();
+        String hashtagMasUsado = miTwitter.hashtagMasUsado(fecha);
+        System.out.println("Hashtag mas usado del día " + fecha + ": " + hashtagMasUsado);
     }
 
     private static void menu(TwitterImpl miTwitter) {
@@ -49,7 +57,7 @@ public class Main {
                     cantidadHashtagsDistintos(miTwitter);
                     break;
                 case 4:
-                    HashtagMasUsado();
+                    HashtagMasUsado(miTwitter);
                     break;
                 case 5:
                     TopCuentasConMasFavoritos();
@@ -68,8 +76,6 @@ public class Main {
     private static void pilotosMasMencionados() {
     }
 
-    private static void HashtagMasUsado() {
-    }
 
     private static void TopCuentasConMasFavoritos() {
     }

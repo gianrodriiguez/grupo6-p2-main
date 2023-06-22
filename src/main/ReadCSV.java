@@ -72,12 +72,15 @@ public class ReadCSV {
                         continue;
                     }
 
-                    String tweetText = csvRecord.get(10);
+                    String tweetText = csvRecord.get(10).trim();
                     String hashtagsString = csvRecord.get(11);
                     hashtagsString = hashtagsString.replace("[", "").replace("]", "");
                     hashtagsString = hashtagsString.replace("'", "");
                     String[] hashtags = hashtagsString.split(",");
-                    String tweetSource = csvRecord.get(12);
+                    for (int k = 0; k < hashtags.length; k++) {
+                        hashtags[k] = hashtags[k].trim();
+                    }
+                    String tweetSource = csvRecord.get(12).trim();
                     boolean isRetweet = Boolean.parseBoolean(csvRecord.get(13));
 
                     // ya existe user?

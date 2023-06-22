@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Hashtable;
 
 public class TwitterImpl implements MyTwitterImpl {
     public HashTableImpl<Long, User> usuarios;
@@ -39,7 +40,7 @@ public class TwitterImpl implements MyTwitterImpl {
     public ListaEnlazada<String> pilotosMasMencionados(String mes, String anio) {
         return null;
     }
-    //            if (tweet.getDate().equals(fechaSeleccionada)) {
+
     @Override
     public int cantHashtagsDistintos(String fechaSinParse) {
         Date fechaSeleccionada = parsearFecha(fechaSinParse);
@@ -59,6 +60,7 @@ public class TwitterImpl implements MyTwitterImpl {
         return contador;
     }
 
+
     private boolean mismaFecha(Date date1, Date fechaSeleccionada) {
         if (date1 == null || fechaSeleccionada == null) {
             return false;
@@ -68,14 +70,11 @@ public class TwitterImpl implements MyTwitterImpl {
         int year1 = cal1.get(Calendar.YEAR);
         int month1 = cal1.get(Calendar.MONTH);
         int day1 = cal1.get(Calendar.DAY_OF_MONTH);
-
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(fechaSeleccionada);
-
         int year2 = cal2.get(Calendar.YEAR);
         int month2 = cal2.get(Calendar.MONTH);
         int day2 = cal2.get(Calendar.DAY_OF_MONTH);
-
         return year1 == year2 && month1 == month2 && day1 == day2;
     }
 
@@ -91,8 +90,38 @@ public class TwitterImpl implements MyTwitterImpl {
     }
 
     @Override
-    public void HashtagMasUsado() {
+    public String hashtagMasUsado(String fechaSinParse) {
+        Date fechaSeleccionada = parsearFecha(fechaSinParse);
+        Hashtable<String,Integer> hashtagCount = new Hashtable<>();
+        for (int i = 0; i < tweets.size(); i++) {
+            Tweet tweet = tweets.get(i);
+            if (mismaFecha(tweet.getDate(), fechaSeleccionada)) {
+                for (int j = 0; j < tweet.getHashtags().size(); j++) {
+                    Hashtag hashtag = tweet.getHashtags().get(j);
+                    String textoHashtag = hashtag.getText().toLowerCase();
+                    if (!textoHashtag.trim().equalsIgnoreCase("f1")) {
+                        if (hashtagCount.containsKey(textoHashtag)) {
+                            int count = hashtagCount.get(textoHashtag);
+                            hashtagCount.put(textoHashtag, count + 1);
+                        } else {
+                            hashtagCount.put(textoHashtag, 1);
+                        }
+                    }
+                }
+            }
+        }
+        String mostUsedHashtag = null;
+        int maxCount = 0;
+        for (String hashtag : hashtagCount.keySet()) {
+            int count = hashtagCount.get(hashtag);
+            if (count > maxCount) {
+                maxCount = count;
+                mostUsedHashtag = hashtag;
+            }
+        }
+        return mostUsedHashtag;
     }
+
 
     @Override
     public void TopCuentasConMasFavoritos() {
