@@ -1,6 +1,7 @@
 package main.tads.linkedlist;
 
 public class ListaEnlazada<T> implements Lista<T> {
+    public java.lang.System System;
     private Nodo<T> primero;
     private int size;
 
