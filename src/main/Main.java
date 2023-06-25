@@ -1,8 +1,9 @@
 package main;
 
-import main.entities.Hashtag;
+import main.entities.Tweet;
 import main.entities.TwitterImpl;
 import main.exceptions.FileNotValidException;
+import main.tads.linkedlist.ListaEnlazada;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -87,6 +88,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese palabra o frase del Tweet: ");
         String texto = scanner.nextLine();
-        miTwitter.TweetsConPalabraFraseEspecifica(texto);
+        int num = miTwitter.TweetsConPalabraFraseEspecifica(texto);
+        System.out.println(num);
+        }
+
     }
-}
+

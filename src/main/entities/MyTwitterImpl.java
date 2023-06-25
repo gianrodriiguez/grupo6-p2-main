@@ -15,5 +15,5 @@ public interface MyTwitterImpl {
 
     String TweetsConPalabraFraseEspecifica(char palabraFrase);
 
-    void TweetsConPalabraFraseEspecifica(String pabalbraFrase);
+    int TweetsConPalabraFraseEspecifica(String pabalbraFrase);
 }

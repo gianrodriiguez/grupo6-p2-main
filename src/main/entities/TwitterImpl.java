@@ -142,7 +142,7 @@ public class TwitterImpl implements MyTwitterImpl {
     }
 
     @Override
-    public void TweetsConPalabraFraseEspecifica(String pabalbraFrase) {
+    public int TweetsConPalabraFraseEspecifica(String pabalbraFrase) {
 
         ListaEnlazada<Tweet> tweetsEncontrados = new ListaEnlazada<>();
 
@@ -156,12 +156,11 @@ public class TwitterImpl implements MyTwitterImpl {
         System.out.println("Tweets que contienen la palabra o frase \"" + pabalbraFrase + "\":");
         if (tweetsEncontrados.size() == 0) {
             System.out.println("No se encontraron tweets con la palabra o frase especificada.");
-        } else {
-            for (int i = 0; i < tweetsEncontrados.size(); i++) {
-                System.out.println(tweetsEncontrados.get(i));
-            }
-        }
+            return 0 ;
 
+        } else {
+            return tweetsEncontrados.size();
+        }
 
     }
 }
