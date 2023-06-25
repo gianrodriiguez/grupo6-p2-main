@@ -35,33 +35,33 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
         return defaultValue;
     }
 
-@Override
-public void put(K key, V value) {
-    int index = hash(key);
-    HashNode<K, V> newNode = new HashNode<>(key, value, null);
+    @Override
+    public void put(K key, V value) {
+        int index = hash(key);
+        HashNode<K, V> newNode = new HashNode<>(key, value, null);
 
-    if (table[index] == null) {
-        table[index] = newNode;
-    } else {
-        HashNode<K, V> currentNode = table[index];
-        while (currentNode != null) {
-            if (currentNode.getKey().equals(key)) {
-                currentNode.setValue(value); // Update the value if the key already exists
-                return;
+        if (table[index] == null) {
+            table[index] = newNode;
+        } else {
+            HashNode<K, V> currentNode = table[index];
+            while (currentNode != null) {
+                if (currentNode.getKey().equals(key)) {
+                    currentNode.setValue(value); // Update the value if the key already exists
+                    return;
+                }
+                if (currentNode.getNext() == null) {
+                    currentNode.setNext(newNode);
+                    return;
+                }
+                currentNode = currentNode.getNext();
             }
-            if (currentNode.getNext() == null) {
-                currentNode.setNext(newNode);
-                return;
-            }
-            currentNode = currentNode.getNext();
+        }
+        size++;
+        float currentIncremento = (float) size / capacidad;
+        if (currentIncremento > incremento) {
+            resizeTable();
         }
     }
-    size++;
-    float currentIncremento = (float) size / capacidad;
-    if (currentIncremento > incremento) {
-        resizeTable();
-    }
-}
 
     @Override
     public ListaEnlazada<K> keysToList() {
@@ -170,4 +170,5 @@ public void put(K key, V value) {
         return Math.abs(key.hashCode()) % capacidad;
     }
 }
+
 

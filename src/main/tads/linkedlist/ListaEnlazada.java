@@ -205,3 +205,4 @@ public class ListaEnlazada<T> implements Lista<T> {
     public void intercambiar(T value, int direccion) {
     }
 }
+
