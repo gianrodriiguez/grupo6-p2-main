@@ -125,20 +125,11 @@ public class TwitterImpl implements MyTwitterImpl {
 
     @Override
     public void TopCuentasConMasFavoritos() {
+
     }
 
     @Override
     public void topUsuariosConMasTweets() {
-    }
-
-    @Override
-    public String TweetsConPalabraFraseEspecifica() {
-        return null;
-    }
-
-    @Override
-    public String TweetsConPalabraFraseEspecifica(char palabraFrase) {
-        return null;
     }
 
     @Override

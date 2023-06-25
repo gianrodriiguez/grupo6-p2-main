@@ -11,9 +11,6 @@ public interface MyTwitterImpl {
 
     void TopCuentasConMasFavoritos();
     void topUsuariosConMasTweets();
-    String TweetsConPalabraFraseEspecifica();
-
-    String TweetsConPalabraFraseEspecifica(char palabraFrase);
 
     int TweetsConPalabraFraseEspecifica(String pabalbraFrase);
 }
