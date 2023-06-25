@@ -3,7 +3,6 @@ package main.entities;
 import main.tads.Queue.QueueConPrioridad;
 import main.tads.hash.HashTable;
 import main.tads.hash.HashTableImpl;
-import main.tads.heap.Heap;
 import main.tads.linkedlist.ListaEnlazada;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -176,7 +175,25 @@ public class TwitterImpl implements MyTwitterImpl {
 
 
     @Override
-    public void TweetsConPalabraFraseEspecifica() {
+    public int TweetsConPalabraFraseEspecifica(String palabraFrase) {
+        ListaEnlazada<Tweet> tweetsEncontrados = new ListaEnlazada<>();
+
+        for (int i = 0; i < tweets.size(); i++) {
+            Tweet tweet = tweets.get(i);
+            if (tweet.getTweetText().toLowerCase().contains(palabraFrase)) {
+                tweetsEncontrados.add(tweet);
+            }
+        }
+
+        System.out.println("Tweets que contienen la palabra o frase \"" + palabraFrase + "\":");
+        if (tweetsEncontrados.size() == 0) {
+            System.out.println("No se encontraron tweets con la palabra o frase especificada.");
+            return 0 ;
+
+        } else {
+            return tweetsEncontrados.size();
+        }
+
     }
 }
 

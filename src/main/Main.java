@@ -92,5 +92,10 @@ public class Main {
     }
 
     private static void TweetsConPalabraFraseEspecifica(TwitterImpl miTwitter) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese palabra o frase del Tweet: ");
+        String texto = scanner.nextLine();
+        miTwitter.TweetsConPalabraFraseEspecifica(texto);
+
     }
 }
