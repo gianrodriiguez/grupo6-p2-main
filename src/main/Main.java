@@ -1,9 +1,9 @@
 package main;
 
-import main.entities.Hashtag;
 import main.entities.TwitterImpl;
+import main.entities.User;
 import main.exceptions.FileNotValidException;
-
+import main.tads.linkedlist.ListaEnlazada;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -31,6 +31,17 @@ public class Main {
         System.out.println("Hashtag mas usado del día " + fecha + ": " + hashtagMasUsado);
     }
 
+    private static void TopUsuariosConMasTweets(TwitterImpl miTwitter) {
+        ListaEnlazada<User> usuariosConMasTweets = miTwitter.topUsuariosConMasTweets();
+        int j = 15;
+        for (int i = 0; i < usuariosConMasTweets.size(); i++) {
+            User usuario = usuariosConMasTweets.get(i);
+            System.out.println(j + ". " + usuario.getName() + "    Tweets: " + usuario.getNumberOfTweets());
+            System.out.println("Verified: " + usuario.getIsVerified());
+            j = j - 1;
+        }
+    }
+
     private static void menu(TwitterImpl miTwitter) {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -48,10 +59,10 @@ public class Main {
             scanner.nextLine();
             switch (option) {
                 case 1:
-                    pilotosMasMencionados();
+                    pilotosMasMencionados(miTwitter);
                     break;
                 case 2:
-                    topUsuariosConMasTweets();
+                    TopUsuariosConMasTweets(miTwitter);
                     break;
                 case 3:
                     cantidadHashtagsDistintos(miTwitter);
@@ -60,10 +71,10 @@ public class Main {
                     HashtagMasUsado(miTwitter);
                     break;
                 case 5:
-                    TopCuentasConMasFavoritos();
+                    TopCuentasConMasFavoritos(miTwitter);
                     break;
                 case 6:
-                    TweetsConPalabraFraseEspecifica();
+                    TweetsConPalabraFraseEspecifica(miTwitter);
                     break;
                 case 7:
                     exit = true;
@@ -73,16 +84,13 @@ public class Main {
         }
     }
 
-    private static void pilotosMasMencionados() {
+    private static void pilotosMasMencionados(TwitterImpl miTwitter) {
     }
 
 
-    private static void TopCuentasConMasFavoritos() {
+    private static void TopCuentasConMasFavoritos(TwitterImpl miTwitter) {
     }
 
-    private static void topUsuariosConMasTweets() {
-    }
-
-    private static void TweetsConPalabraFraseEspecifica() {
+    private static void TweetsConPalabraFraseEspecifica(TwitterImpl miTwitter) {
     }
 }

@@ -15,10 +15,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-
-
-
+import java.util.Hashtable;
 
 public class ReadCSV {
     TwitterImpl miTwitter;
@@ -42,9 +39,8 @@ public class ReadCSV {
         String csvFile = "src/main/resources/f1_dataset_test.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
              CSVParser csvParser = new CSVParser(br, CSVFormat.DEFAULT)) {
-
             ListaEnlazada<String> usuariosProcesados = new ListaEnlazada<>();
-
+            Hashtable<String,User> usuariosProcesados2 = new Hashtable<>();
             for (CSVRecord csvRecord : csvParser) {
                 try {
                     // LECTURA CSV
@@ -83,10 +79,6 @@ public class ReadCSV {
                     String tweetSource = csvRecord.get(12).trim();
                     boolean isRetweet = Boolean.parseBoolean(csvRecord.get(13));
 
-                    // ya existe user?
-                    if (usuariosProcesados.contains(userName.toLowerCase())) {
-                        continue;
-                    }
 
                     // INSERCIONES
                     Tweet tweet = new Tweet(tweetId, tweetText, tweetSource, isRetweet, tweetDateParseada);
@@ -95,6 +87,15 @@ public class ReadCSV {
                         tweet.addHashtag(hashtag);
                         hashtag.getTweets().add(tweet);
                     }
+                    // ya existe user?
+                    if (usuariosProcesados2.containsKey(userName)) {
+                        User usuarioExistente = usuariosProcesados2.get(userName);
+                        if (usuarioExistente != null) {
+                            usuarioExistente.addTweet(tweet);
+                            miTwitter.tweets.add(tweet);
+                        }
+                        continue;
+                    }
 
                     if (tweet != null && tweet.getUser() == null) {
                         User nuevoUser = new User(userName, userFavourites, userIsVerified);
@@ -102,9 +103,8 @@ public class ReadCSV {
                         tweet.setUser(nuevoUser);
                         miTwitter.usuarios.put(nuevoUser.getId(), nuevoUser);
                         miTwitter.tweets.add(tweet);
-                        usuariosProcesados.add(userName.toLowerCase());
+                        usuariosProcesados2.put(userName,nuevoUser);
                     }
-
                 } catch (Exception ignored) {
                 }
             }

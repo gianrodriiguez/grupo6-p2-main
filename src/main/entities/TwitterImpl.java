@@ -1,12 +1,13 @@
 package main.entities;
 
+import main.tads.Queue.QueueConPrioridad;
+import main.tads.hash.HashTable;
 import main.tads.hash.HashTableImpl;
+import main.tads.heap.Heap;
 import main.tads.linkedlist.ListaEnlazada;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Hashtable;
+import java.util.*;
 
 public class TwitterImpl implements MyTwitterImpl {
     public HashTableImpl<Long, User> usuarios;
@@ -31,11 +32,9 @@ public class TwitterImpl implements MyTwitterImpl {
     public HashTableImpl<Long, User> getUsuarios() {
         return usuarios;
     }
-
     public void setUsuarios(HashTableImpl<Long, User> usuarios) {
         this.usuarios = usuarios;
     }
-
     @Override
     public ListaEnlazada<String> pilotosMasMencionados(String mes, String anio) {
         return null;
@@ -59,7 +58,6 @@ public class TwitterImpl implements MyTwitterImpl {
         contador = hashtagsDistintos.size();
         return contador;
     }
-
 
     private boolean mismaFecha(Date date1, Date fechaSeleccionada) {
         if (date1 == null || fechaSeleccionada == null) {
@@ -92,7 +90,7 @@ public class TwitterImpl implements MyTwitterImpl {
     @Override
     public String hashtagMasUsado(String fechaSinParse) {
         Date fechaSeleccionada = parsearFecha(fechaSinParse);
-        Hashtable<String,Integer> hashtagCount = new Hashtable<>();
+        HashTable<String, Integer> hashtagCount = new HashTableImpl<>();
         for (int i = 0; i < tweets.size(); i++) {
             Tweet tweet = tweets.get(i);
             if (mismaFecha(tweet.getDate(), fechaSeleccionada)) {
@@ -100,36 +98,82 @@ public class TwitterImpl implements MyTwitterImpl {
                     Hashtag hashtag = tweet.getHashtags().get(j);
                     String textoHashtag = hashtag.getText().toLowerCase();
                     if (!textoHashtag.trim().equalsIgnoreCase("f1")) {
-                        if (hashtagCount.containsKey(textoHashtag)) {
-                            int count = hashtagCount.get(textoHashtag);
-                            hashtagCount.put(textoHashtag, count + 1);
-                        } else {
-                            hashtagCount.put(textoHashtag, 1);
-                        }
+                        int count = hashtagCount.getOrDefault(textoHashtag, 0);
+                        hashtagCount.put(textoHashtag, count + 1);
                     }
                 }
             }
         }
-        String mostUsedHashtag = null;
+        String hashtagMasUsado = null;
         int maxCount = 0;
-        for (String hashtag : hashtagCount.keySet()) {
+        for (int i = 0; i < hashtagCount.keysToList().size(); i++) {
+            String hashtag = hashtagCount.keysToList().get(i);
             int count = hashtagCount.get(hashtag);
             if (count > maxCount) {
                 maxCount = count;
-                mostUsedHashtag = hashtag;
+                hashtagMasUsado = hashtag;
             }
         }
-        return mostUsedHashtag;
+        return hashtagMasUsado;
     }
 
+//    @Override
+//    public ListaEnlazada<User> topUsuariosConMasTweets() {
+//        // usuarios y numero de tweets aca
+//        HashTable<User, Integer> usuarioTweetCount = new HashTableImpl<>();
+//        for (int i = 0; i < tweets.size(); i++) {
+//            Tweet tweet = tweets.get(i);
+//            User user = tweet.getUser();
+//            if (user != null) {
+//                usuarioTweetCount.put(user, usuarioTweetCount.getOrDefault(user, 0) + 1);
+//            }
+//        }
+//        // Create a priority queue (max heap) to hold users based on tweet count
+//        QueueConPrioridad<User> pq = new QueueConPrioridad<>(Comparator.comparingInt(usuarioTweetCount::get).reversed());
+//        // Add users to the priority queue
+//        ListaEnlazada<User> keysList = usuarioTweetCount.keysToList();
+//        int size = keysList.size();
+//        for (int i = 0; i < size; i++) {
+//            User user = keysList.get(i);
+//            int tweetCount = usuarioTweetCount.get(user);
+//            user.setNumberOfTweets(tweetCount);
+//            pq.enqueueConPrioridad(user);
+//            if (pq.size() > 15) {
+//                pq.dequeue(); // Remove the user with the least tweet count
+//            }
+//        }
+//        // Create a linked list to store the top users
+//        ListaEnlazada<User> topUsuarios = new ListaEnlazada<>();
+//        while (!pq.isEmpty()) {
+//            topUsuarios.addFirst(pq.dequeue());
+//        }
+//        return topUsuarios;
+//    }
+
+    @Override
+    public ListaEnlazada<User> topUsuariosConMasTweets() {
+        QueueConPrioridad<Integer,User> usuarioTweetCount = new QueueConPrioridad<>();
+        for (int i = 0; i < tweets.size(); i++) {
+            Tweet tweet = tweets.get(i);
+            User user = tweet.getUser();
+            if (user != null) {
+                usuarioTweetCount.enqueueConPrioridad(user.getNumberOfTweets(),user);
+                if (usuarioTweetCount.size() == 16) {
+                    usuarioTweetCount.dequeueLeft();
+                }
+            }
+        }
+        ListaEnlazada<User> topUsuarios = new ListaEnlazada<>();
+            while (!usuarioTweetCount.isEmpty()) {
+            topUsuarios.addFirst(usuarioTweetCount.dequeue().getValue());
+        }
+            return topUsuarios;
+    }
 
     @Override
     public void TopCuentasConMasFavoritos() {
     }
 
-    @Override
-    public void topUsuariosConMasTweets() {
-    }
 
     @Override
     public void TweetsConPalabraFraseEspecifica() {

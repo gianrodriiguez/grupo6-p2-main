@@ -1,6 +1,8 @@
 package main.tads.Queue;
 
-public class Queue<T> implements MyQueue<T>{
+import java.util.Comparator;
+
+public class Queue<T, K, V> implements MyQueue<T, K, V> {
 
     Nodo<T> head;
     Nodo<T> tail;
@@ -91,7 +93,11 @@ public class Queue<T> implements MyQueue<T>{
     }
 
     @Override
-    public void enqueueConPrioridad(T value, int prioridad) {
+    public void enqueueConPrioridad(K key, V value){
+    }
 
+    @Override
+    public int size() {
+        return 0;
     }
 }

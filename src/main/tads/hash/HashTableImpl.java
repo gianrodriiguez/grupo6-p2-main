@@ -23,25 +23,69 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
     }
 
     @Override
-    public void put(K key, V value) {
-        int indice = hash(key);
-        HashNode<K, V> newNode = new HashNode<>(key, value, null);
+    public V getOrDefault(K key, V defaultValue) {
+        int index = hash(key);
+        HashNode<K, V> currentNode = table[index];
+        while (currentNode != null) {
+            if (currentNode.getKey().equals(key)) {
+                return currentNode.getValue();
+            }
+            currentNode = currentNode.getNext();
+        }
+        return defaultValue;
+    }
 
-        if (table[indice] == null) {
-            table[indice] = newNode;
-        } else {
-            HashNode<K, V> currentNode = table[indice];
-            while (currentNode.getNext() != null) {
+@Override
+public void put(K key, V value) {
+    int index = hash(key);
+    HashNode<K, V> newNode = new HashNode<>(key, value, null);
+
+    if (table[index] == null) {
+        table[index] = newNode;
+    } else {
+        HashNode<K, V> currentNode = table[index];
+        while (currentNode != null) {
+            if (currentNode.getKey().equals(key)) {
+                currentNode.setValue(value); // Update the value if the key already exists
+                return;
+            }
+            if (currentNode.getNext() == null) {
+                currentNode.setNext(newNode);
+                return;
+            }
+            currentNode = currentNode.getNext();
+        }
+    }
+    size++;
+    float currentIncremento = (float) size / capacidad;
+    if (currentIncremento > incremento) {
+        resizeTable();
+    }
+}
+
+    @Override
+    public ListaEnlazada<K> keysToList() {
+        ListaEnlazada<K> keysList = new ListaEnlazada<>();
+        for (HashNode<K, V> node : table) {
+            HashNode<K, V> currentNode = node;
+            while (currentNode != null) {
+                keysList.add(currentNode.getKey());
                 currentNode = currentNode.getNext();
             }
-            currentNode.setNext(newNode);
         }
-        size++;
-
-        float currentIncremento = (float) size / capacidad;
-        if (currentIncremento > incremento) {
-            resizeTable();
+        return keysList;
+    }
+    @Override
+    public V get(K key) {
+        int index = hash(key);
+        HashNode<K, V> currentNode = table[index];
+        while (currentNode != null) {
+            if (currentNode.getKey().equals(key)) {
+                return currentNode.getValue();
+            }
+            currentNode = currentNode.getNext();
         }
+        return null;
     }
 
     private void resizeTable() {

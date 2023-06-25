@@ -10,6 +10,6 @@ public interface MyTwitterImpl {
     String hashtagMasUsado(String fechaSinParse);
 
     void TopCuentasConMasFavoritos();
-    void topUsuariosConMasTweets();
+    ListaEnlazada<User> topUsuariosConMasTweets();
     void TweetsConPalabraFraseEspecifica();
 }

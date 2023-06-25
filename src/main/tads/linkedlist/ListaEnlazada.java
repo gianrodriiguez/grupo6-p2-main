@@ -42,6 +42,11 @@ public class ListaEnlazada<T> implements Lista<T> {
         size++;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
     // REMOVE ELEMENT IN posicion i
     @Override
     public void remove(int posicion) {
@@ -65,7 +70,7 @@ public class ListaEnlazada<T> implements Lista<T> {
     }
 
     // GET ELEMENT IN posicion i
-    @Override
+//    @Override
     public T get(int posicion) {
         if (Math.abs(posicion) >= size) {
             return null;
