@@ -63,7 +63,7 @@ public class Main {
                     TopCuentasConMasFavoritos();
                     break;
                 case 6:
-                    TweetsConPalabraFraseEspecifica();
+                    TweetsConPalabraFraseEspecifica(miTwitter);
                     break;
                 case 7:
                     exit = true;
@@ -83,6 +83,10 @@ public class Main {
     private static void topUsuariosConMasTweets() {
     }
 
-    private static void TweetsConPalabraFraseEspecifica() {
+    private static void TweetsConPalabraFraseEspecifica(TwitterImpl miTwitter) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese palabra o frase del Tweet: ");
+        String texto = scanner.nextLine();
+        miTwitter.TweetsConPalabraFraseEspecifica(texto);
     }
 }

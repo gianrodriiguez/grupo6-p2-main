@@ -92,7 +92,7 @@ public class TwitterImpl implements MyTwitterImpl {
     @Override
     public String hashtagMasUsado(String fechaSinParse) {
         Date fechaSeleccionada = parsearFecha(fechaSinParse);
-        Hashtable<String,Integer> hashtagCount = new Hashtable<>();
+        Hashtable<String, Integer> hashtagCount = new Hashtable<>();
         for (int i = 0; i < tweets.size(); i++) {
             Tweet tweet = tweets.get(i);
             if (mismaFecha(tweet.getDate(), fechaSeleccionada)) {
@@ -132,6 +132,36 @@ public class TwitterImpl implements MyTwitterImpl {
     }
 
     @Override
-    public void TweetsConPalabraFraseEspecifica() {
+    public String TweetsConPalabraFraseEspecifica() {
+        return null;
+    }
+
+    @Override
+    public String TweetsConPalabraFraseEspecifica(char palabraFrase) {
+        return null;
+    }
+
+    @Override
+    public void TweetsConPalabraFraseEspecifica(String pabalbraFrase) {
+
+        ListaEnlazada<Tweet> tweetsEncontrados = new ListaEnlazada<>();
+
+        for (int i = 0; i < tweets.size(); i++) {
+            Tweet tweet = tweets.get(i);
+            if (tweet.getTweetText().toLowerCase().contains(pabalbraFrase)) {
+                tweetsEncontrados.add(tweet);
+            }
+        }
+
+        System.out.println("Tweets que contienen la palabra o frase \"" + pabalbraFrase + "\":");
+        if (tweetsEncontrados.size() == 0) {
+            System.out.println("No se encontraron tweets con la palabra o frase especificada.");
+        } else {
+            for (int i = 0; i < tweetsEncontrados.size(); i++) {
+                System.out.println(tweetsEncontrados.get(i));
+            }
+        }
+
+
     }
 }
