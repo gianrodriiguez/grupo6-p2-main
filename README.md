@@ -8,4 +8,13 @@ tweets (ListaEnlazada<Tweet>): Lista enlazada que almacena los tweets - objetos 
 usuarios (HashTableImpl<Long, User>): Tabla Hash que almacena los usuarios - objetos User.
 
 
+getDriversFromFile(): Carga los datos de los pilotos desde el archivo de texto.
+getUsersInfo(): Carga los datos de los tweets desde el conjunto de datos CSV.
 
+cantidadHashtagsDistintos(): Cuenta la cantidad de hashtags diferentes en una fecha dada.
+
+HashtagMasUsado():Obtiene el hashtag más utilizado en una fecha dada.
+
+TopUsuariosConMasTweets(): Muestra los 15 usuarios con más tweets.
+
+TweetsConPalabraFraseEspecifica(): Cuenta la cantidad de tweets que contienen una palabra o frase específica.
