@@ -10,6 +10,11 @@ tweets (ListaEnlazada<Tweet>): Lista enlazada que almacena los tweets - objetos 
 
 usuarios (HashTableImpl<Long, User>): Tabla Hash que almacena los usuarios - objetos User.
 
+mismaFecha(Date date1, Date fechaSeleccionada) : Compara mes y año de dos fechas
+
+mismoMes(Date date1, Date fechaSeleccionada): COmpara solo mes de dos fechas
+
+convertirAFecha(String year, String month): convierte dos strings en una fecha con ese mes y año que recibe
 
 getDriversFromFile(): Carga los datos de los pilotos desde el archivo de texto.
 
