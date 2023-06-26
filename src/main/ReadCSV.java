@@ -4,6 +4,7 @@ import main.entities.Hashtag;
 import main.entities.Tweet;
 import main.entities.TwitterImpl;
 import main.entities.User;
+import main.tads.hash.HashTableImpl;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -40,7 +41,7 @@ public class ReadCSV {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
              CSVParser csvParser = new CSVParser(br, CSVFormat.DEFAULT)) {
             ListaEnlazada<String> usuariosProcesados = new ListaEnlazada<>();
-            Hashtable<String,User> usuariosProcesados2 = new Hashtable<>();
+            HashTableImpl<String,User> usuariosProcesados2 = new HashTableImpl<>();
             for (CSVRecord csvRecord : csvParser) {
                 try {
                     // LECTURA CSV
@@ -88,7 +89,7 @@ public class ReadCSV {
                         hashtag.getTweets().add(tweet);
                     }
                     // ya existe user?
-                    if (usuariosProcesados2.containsKey(userName)) {
+                    if (usuariosProcesados2.contains(userName)) {
                         User usuarioExistente = usuariosProcesados2.get(userName);
                         if (usuarioExistente != null) {
                             usuarioExistente.addTweet(tweet);

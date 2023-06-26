@@ -17,7 +17,6 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
         this.size = 0;
         this.incremento = 0.75f;
     }
-
     public int size() {
         return size;
     }
@@ -46,7 +45,7 @@ public class HashTableImpl<K, V> implements HashTable<K, V> {
             HashNode<K, V> currentNode = table[index];
             while (currentNode != null) {
                 if (currentNode.getKey().equals(key)) {
-                    currentNode.setValue(value); // Update the value if the key already exists
+                    currentNode.setValue(value);
                     return;
                 }
                 if (currentNode.getNext() == null) {

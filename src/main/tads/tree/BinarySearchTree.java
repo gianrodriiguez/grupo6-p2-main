@@ -64,27 +64,6 @@ public class BinarySearchTree<k extends Comparable<k>,T> implements MyBinarySear
             return actual.getValue();
         }
     }
-
-//    private T findHelper(NodoBST<k, T> actual, k key) {
-//        if (actual == null && actual == root) {
-//            return null;
-//        }
-////                key actual - key find
-//        // Izquierda
-//        if (actual.getKey().compareTo(key) > 0) {
-//            return findHelper(actual.getleft(), key);
-//        }
-//
-//        //  Derecha
-//        if (actual.getKey().compareTo(key) < 0) {
-//            return findHelper(actual.getright(), key);
-//        }
-//        if (actual.getKey().compareTo(key) == 0) {
-//            return actual.getValue();
-//        }
-//
-//        return null;
-//    }
     @Override
     public void delete(k key) {
         root = deleteHelper(root, key);

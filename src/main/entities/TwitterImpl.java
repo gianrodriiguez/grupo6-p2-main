@@ -35,8 +35,97 @@ public class TwitterImpl implements MyTwitterImpl {
         this.usuarios = usuarios;
     }
     @Override
-    public ListaEnlazada<String> pilotosMasMencionados(String mes, String anio) {
-        return null;
+    public void pilotosMasMencionados(String mes, String anio) {
+        QueueConPrioridad<Integer, String> pilotosMencionados = new QueueConPrioridad<>();
+        HashTableImpl<String, Integer> mentionsCount = new HashTableImpl<>();
+        for (int i = 0; i < tweets.size(); i++) {
+            Tweet tweet = tweets.get(i);
+            if (mismoMes(tweet.getDate(), convertirAFecha(anio, mes))) {
+                for (int j = 0; j < pilotos.size(); j++) {
+                    String pilotName = pilotos.get(j);
+                    String[] pilotWords = pilotName.split(" ");
+                    boolean containsPilotName = true;
+                    for (String word : pilotWords) {
+                        if (!tweet.getTweetText().contains(word)) {
+                            containsPilotName = false;
+                            break;
+                        }
+                    }
+                    if (containsPilotName) {
+                        int currentCount = mentionsCount.getOrDefault(pilotName, 0);
+                        mentionsCount.put(pilotName, currentCount + 1);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < mentionsCount.keysToList().size(); i++) {
+            String pilotName = mentionsCount.keysToList().get(i);
+            int mentionCount = mentionsCount.get(pilotName);
+            pilotosMencionados.enqueueConPrioridad(mentionCount, pilotName);
+            if (pilotosMencionados.size() > 10) {
+                pilotosMencionados.dequeue();
+            }
+        }
+        ListaEnlazada<String> topPilotos = new ListaEnlazada<>();
+        while (!pilotosMencionados.isEmpty()) {
+            topPilotos.addFirst(pilotosMencionados.dequeue().getValue());
+        }
+        for (int i = 0; i < topPilotos.size(); i++) {
+            System.out.println(topPilotos.get(i));
+        }
+    }
+
+    private void insertInOrder(LinkedList<PilotMention> list, PilotMention pilotMention) {
+        int index = 0;
+        while (index < list.size() && pilotMention.compareTo(list.get(index)) <= 0) {
+            index++;
+        }
+        list.add(index, pilotMention);
+    }
+
+    private static class PilotMention implements Comparable<PilotMention> {
+        private String pilotName;
+        private int mentionCount;
+
+        public PilotMention(String pilotName, int mentionCount) {
+            this.pilotName = pilotName;
+            this.mentionCount = mentionCount;
+        }
+
+        @Override
+        public int compareTo(PilotMention other) {
+            return Integer.compare(this.mentionCount, other.mentionCount);
+        }
+    }
+
+    private boolean mismoMes(Date date1, Date fechaSeleccionada) {
+        if (date1 == null || fechaSeleccionada == null) {
+            return false;
+        }
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+        int year1 = cal1.get(Calendar.YEAR);
+        int month1 = cal1.get(Calendar.MONTH);
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(fechaSeleccionada);
+        int year2 = cal2.get(Calendar.YEAR);
+        int month2 = cal2.get(Calendar.MONTH);
+        return year1 == year2 && month1 == month2;
+    }
+
+    private Date convertirAFecha(String year, String month) {
+        try {
+            int yearValue = Integer.parseInt(year);
+            int monthValue = Integer.parseInt(month);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, yearValue);
+            calendar.set(Calendar.MONTH, monthValue - 1);
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            return calendar.getTime();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -116,39 +205,6 @@ public class TwitterImpl implements MyTwitterImpl {
         return hashtagMasUsado;
     }
 
-//    @Override
-//    public ListaEnlazada<User> topUsuariosConMasTweets() {
-//        // usuarios y numero de tweets aca
-//        HashTable<User, Integer> usuarioTweetCount = new HashTableImpl<>();
-//        for (int i = 0; i < tweets.size(); i++) {
-//            Tweet tweet = tweets.get(i);
-//            User user = tweet.getUser();
-//            if (user != null) {
-//                usuarioTweetCount.put(user, usuarioTweetCount.getOrDefault(user, 0) + 1);
-//            }
-//        }
-//        // Create a priority queue (max heap) to hold users based on tweet count
-//        QueueConPrioridad<User> pq = new QueueConPrioridad<>(Comparator.comparingInt(usuarioTweetCount::get).reversed());
-//        // Add users to the priority queue
-//        ListaEnlazada<User> keysList = usuarioTweetCount.keysToList();
-//        int size = keysList.size();
-//        for (int i = 0; i < size; i++) {
-//            User user = keysList.get(i);
-//            int tweetCount = usuarioTweetCount.get(user);
-//            user.setNumberOfTweets(tweetCount);
-//            pq.enqueueConPrioridad(user);
-//            if (pq.size() > 15) {
-//                pq.dequeue(); // Remove the user with the least tweet count
-//            }
-//        }
-//        // Create a linked list to store the top users
-//        ListaEnlazada<User> topUsuarios = new ListaEnlazada<>();
-//        while (!pq.isEmpty()) {
-//            topUsuarios.addFirst(pq.dequeue());
-//        }
-//        return topUsuarios;
-//    }
-
     @Override
     public ListaEnlazada<User> topUsuariosConMasTweets() {
         QueueConPrioridad<Integer,User> usuarioTweetCount = new QueueConPrioridad<>();
@@ -177,14 +233,12 @@ public class TwitterImpl implements MyTwitterImpl {
     @Override
     public int TweetsConPalabraFraseEspecifica(String palabraFrase) {
         ListaEnlazada<Tweet> tweetsEncontrados = new ListaEnlazada<>();
-
         for (int i = 0; i < tweets.size(); i++) {
             Tweet tweet = tweets.get(i);
             if (tweet.getTweetText().toLowerCase().contains(palabraFrase)) {
                 tweetsEncontrados.add(tweet);
             }
         }
-
         System.out.println("Tweets que contienen la palabra o frase \"" + palabraFrase + "\":");
         if (tweetsEncontrados.size() == 0) {
             System.out.println("No se encontraron tweets con la palabra o frase especificada.");
@@ -193,7 +247,6 @@ public class TwitterImpl implements MyTwitterImpl {
         } else {
             return tweetsEncontrados.size();
         }
-
     }
 }
 

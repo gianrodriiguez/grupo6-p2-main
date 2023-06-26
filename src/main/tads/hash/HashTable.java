@@ -11,4 +11,5 @@ public interface HashTable<K, V> {
     ListaEnlazada<K> keysToList();
     V get(K key);
     V getOrDefault(K key, V defaultValue);
+
 }

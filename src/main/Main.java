@@ -59,7 +59,7 @@ public class Main {
             scanner.nextLine();
             switch (option) {
                 case 1:
-                    pilotosMasMencionados(miTwitter);
+                    PilotosMasMencionados(miTwitter);
                     break;
                 case 2:
                     TopUsuariosConMasTweets(miTwitter);
@@ -84,7 +84,14 @@ public class Main {
         }
     }
 
-    private static void pilotosMasMencionados(TwitterImpl miTwitter) {
+    private static void PilotosMasMencionados(TwitterImpl miTwitter) {
+        Scanner scanner1 = new Scanner(System.in);
+        System.out.println("Ingresa año (ej: 2023 ): ");
+        String yearString = scanner1.nextLine();
+        Scanner scanner2 = new Scanner(System.in);
+        System.out.println("Ingresa mes (ej: 6 ): ");
+        String monthString = scanner2.nextLine();
+        miTwitter.pilotosMasMencionados(monthString, yearString);
     }
 
 
@@ -95,7 +102,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese palabra o frase del Tweet: ");
         String texto = scanner.nextLine();
-        miTwitter.TweetsConPalabraFraseEspecifica(texto);
+        System.out.println(miTwitter.TweetsConPalabraFraseEspecifica(texto));
 
     }
 }
